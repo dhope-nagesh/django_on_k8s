@@ -1,0 +1,16 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+metadata:
+  name: video-gallary
+build:
+  tagPolicy:
+    gitCommit: 
+      variant: AbbrevCommitSha
+  artifacts:
+  - image: nageshdhope/video-gallary
+    docker:
+      dockerfile: Dockerfile
+deploy:
+  kustomize:
+    paths:
+    - config/dev

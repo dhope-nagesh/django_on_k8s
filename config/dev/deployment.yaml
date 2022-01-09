@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: video-gallary
+spec:
+  selector:
+    matchLabels:
+      app: video-gallary
+  template:
+    metadata:
+      labels:
+        app: video-gallary
+    spec:
+      initContainers:
+        - name: check-db-ready
+          image: postgres:14-alpine
+          command:
+            - "/bin/sh"
+            - "-c"
+            - "until pg_isready -h postgres.default.svc.cluster.local -p 5432; do echo waiting for database; sleep 2; done;"
+      containers:
+      - name: video-gallary
+        image: nageshdhope/video-gallary
+        env:
+          - name: POSTGRES_HOST
+            value: postgres.default.svc.cluster.local
+        envFrom:
+          - configMapRef:
+              name: video-gallary
+          - secretRef:
+              name: video-gallary
+          - secretRef:
+              name: postgres
+        ports:
+        - containerPort: 8000
