@@ -7,6 +7,12 @@
 brew install kind
 ```
 
+## Create kubernetes cluster with kind
+
+```bash
+kind create cluster --config scripts/kind.yaml
+```
+
 ## Install Kustomization
 
 ```bash
